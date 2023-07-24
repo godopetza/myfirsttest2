@@ -13,6 +13,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool showContent = true;
+  int? _selectedIndex;
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(
@@ -49,32 +50,39 @@ class _HomeScreenState extends State<HomeScreen> {
                               color: Colors.blueGrey,
                             ),
                             itemBuilder: (context, index) => ListTile(
-                              trailing: SizedBox(
-                                width: 110.0,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    IconButton(
-                                      icon: const Icon(Icons.edit,
-                                          color: Colors.blue),
-                                      onPressed: () {},
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(
-                                        Icons.delete,
-                                        color: Colors.blue,
+                              trailing: _selectedIndex == index
+                                  ? SizedBox(
+                                      width: 110.0,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          IconButton(
+                                            icon: const Icon(Icons.edit,
+                                                color: Colors.blue),
+                                            onPressed: () {},
+                                          ),
+                                          IconButton(
+                                            icon: const Icon(
+                                              Icons.delete,
+                                              color: Colors.blue,
+                                            ),
+                                            onPressed: () {},
+                                          ),
+                                        ],
                                       ),
-                                      onPressed: () {},
-                                    ),
-                                  ],
-                                ),
-                              ),
+                                    )
+                                  : null,
                               title: Text("${_.usernotes[index].title}"),
                               subtitle: showContent
                                   ? Text("${_.usernotes[index].content}")
                                   : null,
                               onTap: () {},
-                              onLongPress: () {},
+                              onLongPress: () {
+                                setState(() {
+                                  _selectedIndex = index;
+                                });
+                              },
                             ),
                           );
                         } else {
