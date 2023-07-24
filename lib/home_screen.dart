@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import 'controllers/firebase_functions.dart';
 
 class HomeScreen extends StatelessWidget {
   static Route route() => MaterialPageRoute(builder: (_) => const HomeScreen());
@@ -6,72 +9,93 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('My Notes'),
-        actions: [
-          CircleAvatar(
-            backgroundColor: Colors.blue.shade200,
-            child: const Text(
-              '4',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22.0),
+    return GetBuilder<HomeController>(
+        init: HomeController(),
+        builder: (_) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('My Notes'),
+              actions: [
+                CircleAvatar(
+                  backgroundColor: Colors.blue.shade200,
+                  child: Text(
+                    "${_.usernotes.length}",
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 22.0),
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+              ],
             ),
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-        ],
-      ),
-      body: ListView.separated(
-        itemCount: 4,
-        separatorBuilder: (context, index) => const Divider(
-          color: Colors.blueGrey,
-        ),
-        itemBuilder: (context, index) => ListTile(
-          trailing: SizedBox(
-            width: 110.0,
-            child: Row(
+            body: GetBuilder<HomeController>(
+                init: HomeController(),
+                builder: (_) {
+                  return FutureBuilder(
+                      future: _.getusernotes(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done &&
+                            _.isLoading.value) {
+                          return ListView.separated(
+                            itemCount: _.usernotes.length,
+                            separatorBuilder: (context, index) => const Divider(
+                              color: Colors.blueGrey,
+                            ),
+                            itemBuilder: (context, index) => ListTile(
+                              trailing: SizedBox(
+                                width: 110.0,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(Icons.edit,
+                                          color: Colors.blue),
+                                      onPressed: () {},
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(
+                                        Icons.delete,
+                                        color: Colors.blue,
+                                      ),
+                                      onPressed: () {},
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              title: Text("${_.usernotes[index].title}"),
+                              subtitle: Text("${_.usernotes[index].content}"),
+                              onTap: () {},
+                              onLongPress: () {},
+                            ),
+                          );
+                        } else {
+                          return const Center(
+                            child: Text("No Notes Available."),
+                          );
+                        }
+                      });
+                }),
+            floatingActionButton: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                IconButton(
-                  icon: const Icon(Icons.edit, color: Colors.blue),
-                  onPressed: () {},
-                ),
-                IconButton(
-                  icon: const Icon(
-                    Icons.delete,
-                    color: Colors.blue,
-                  ),
+                FloatingActionButton(
+                    child: const Icon(Icons.menu),
+                    heroTag: "btn1",
+                    tooltip: 'Show less. Hide notes content',
+                    onPressed: () {}),
+
+                /* Notes: for the "Show More" icon use: Icons.menu */
+
+                FloatingActionButton(
+                  child: const Icon(Icons.add),
+                  heroTag: "btn2",
+                  tooltip: 'Add a new note',
                   onPressed: () {},
                 ),
               ],
             ),
-          ),
-          title: const Text('Note title'),
-          subtitle: const Text('Note content'),
-          onTap: () {},
-          onLongPress: () {},
-        ),
-      ),
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-              child: const Icon(Icons.menu),
-              heroTag: "btn1",
-              tooltip: 'Show less. Hide notes content',
-              onPressed: () {}),
-
-          /* Notes: for the "Show More" icon use: Icons.menu */
-
-          FloatingActionButton(
-            child: const Icon(Icons.add),
-            heroTag: "btn2",
-            tooltip: 'Add a new note',
-            onPressed: () {},
-          ),
-        ],
-      ),
-    );
+          );
+        });
   }
 }

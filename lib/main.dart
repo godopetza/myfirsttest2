@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 // import 'login_screen.dart';
 import 'firebase_options.dart';
+import 'home_screen.dart';
 import 'login_screen.dart';
 // import 'edit_screen.dart';
 
@@ -26,8 +27,8 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginScreen(),
-      // home: const HomeScreen(),
+      // home: const LoginScreen(),
+      home: const HomeScreen(),
       // home: const EditScreen(),
     );
   }
