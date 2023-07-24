@@ -11,7 +11,7 @@ class EditScreen extends StatefulWidget {
 
   final String appBarTitle; //B7
   final String? notetitle, notedesc, id;
-  final bool enableFields; 
+  final bool enableFields; //B8
   final bool postnew;
 
   const EditScreen(
@@ -71,7 +71,7 @@ class _EditScreenState extends State<EditScreen> {
           children: [
             TextFormField(
               controller: _titleController,
-              enabled: widget.enableFields,
+              enabled: widget.enableFields, //B8
               style: const TextStyle(color: Colors.black),
               decoration: const InputDecoration(
                 hintText: 'Type the title here',
@@ -83,7 +83,7 @@ class _EditScreenState extends State<EditScreen> {
             Expanded(
               child: TextFormField(
                 controller: _descriptionController,
-                enabled: widget.enableFields,
+                enabled: widget.enableFields, //B8
                 style: const TextStyle(color: Colors.black),
                 maxLines: null,
                 expands: true,
