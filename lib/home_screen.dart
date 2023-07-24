@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -14,6 +15,23 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool showContent = true;
   int? _selectedIndex;
+  
+  //Function to delete a note from Firebase
+  Future<void> _deleteNote(String id) async {
+    try {
+      await FirebaseFirestore.instance.collection("notes").doc(id).delete();
+
+      // Refresh the data after deletion
+      setState(() {
+        _selectedIndex = null; // Reset the selected index
+        showContent = true; // Reset showContent to true
+      });
+    } catch (e) {
+      // Handle error
+      print("Error deleting note: $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(
@@ -63,11 +81,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                             onPressed: () {},
                                           ),
                                           IconButton(
-                                            icon: const Icon(
-                                              Icons.delete,
-                                              color: Colors.blue,
-                                            ),
-                                            onPressed: () {},
+                                            icon: const Icon(Icons.delete,
+                                                color: Colors.blue),
+                                            onPressed: () async {
+                                              // Delete note
+                                              await _deleteNote(
+                                                  _.usernotes[index].id);
+                                            },
                                           ),
                                         ],
                                       ),
