@@ -3,10 +3,16 @@ import 'package:get/get.dart';
 
 import 'controllers/firebase_functions.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   static Route route() => MaterialPageRoute(builder: (_) => const HomeScreen());
   const HomeScreen({Key? key}) : super(key: key);
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  bool showContent = true;
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(
@@ -64,7 +70,9 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ),
                               title: Text("${_.usernotes[index].title}"),
-                              subtitle: Text("${_.usernotes[index].content}"),
+                              subtitle: showContent
+                                  ? Text("${_.usernotes[index].content}")
+                                  : null,
                               onTap: () {},
                               onLongPress: () {},
                             ),
@@ -80,10 +88,16 @@ class HomeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 FloatingActionButton(
-                    child: const Icon(Icons.menu),
+                    child: showContent
+                        ? const Icon(Icons.unfold_less)
+                        : const Icon(Icons.menu),
                     heroTag: "btn1",
                     tooltip: 'Show less. Hide notes content',
-                    onPressed: () {}),
+                    onPressed: () {
+                      setState(() {
+                        showContent = !showContent;
+                      });
+                    }),
 
                 /* Notes: for the "Show More" icon use: Icons.menu */
 
