@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 // import 'login_screen.dart';
 import 'firebase_options.dart';
 import 'home_screen.dart';
-import 'login_screen.dart';
 // import 'edit_screen.dart';
 
 void main() async {
