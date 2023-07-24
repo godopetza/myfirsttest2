@@ -9,9 +9,9 @@ class EditScreen extends StatefulWidget {
             enableFields: false,
           ));
 
-  final String appBarTitle;
+  final String appBarTitle; //B7
   final String? notetitle, notedesc, id;
-  final bool enableFields;
+  final bool enableFields; 
   final bool postnew;
 
   const EditScreen(
@@ -39,7 +39,7 @@ class _EditScreenState extends State<EditScreen> {
       appBar: AppBar(
         leading: Container(),
         centerTitle: true,
-        title: Text(widget.appBarTitle),
+        title: Text(widget.appBarTitle), // Task B7 here
         actions: [
           if (widget.enableFields)
             IconButton(
