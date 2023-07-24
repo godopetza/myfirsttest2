@@ -47,8 +47,8 @@ class _EditScreenState extends State<EditScreen> {
                   Icons.check_circle,
                   size: 30,
                 ),
-                onPressed: () {
-                  //check if new post new if edit then edit
+                onPressed: () { // TASK B9
+                  //check if new post new if edit then edit //B9
                   widget.postnew
                       ? homeController.createNote(
                           _titleController.text, _descriptionController.text)
