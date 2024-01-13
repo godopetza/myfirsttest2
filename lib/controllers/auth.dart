@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:map_exam/home_screen.dart';
 import 'package:map_exam/login_screen.dart';
@@ -11,7 +12,7 @@ class AuthController extends GetxController {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
       Get.to(() => const HomeScreen());
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
     }
   }
 
@@ -21,7 +22,7 @@ class AuthController extends GetxController {
         Get.to(() => const LoginScreen());
       });
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
     }
   }
 }

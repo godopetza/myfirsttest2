@@ -2,10 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-// import 'login_screen.dart';
 import 'firebase_options.dart';
-import 'home_screen.dart';
-// import 'edit_screen.dart';
+import 'login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,9 +24,7 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // home: const LoginScreen(),
-      home: const HomeScreen(),
-      // home: const EditScreen(),
+      home: const LoginScreen(),
     );
   }
 }

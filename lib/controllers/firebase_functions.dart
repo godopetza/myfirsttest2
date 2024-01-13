@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../home_screen.dart';
@@ -10,7 +11,13 @@ class HomeController extends GetxController {
   var db = FirebaseFirestore.instance;
   var isLoading = false.obs;
 
-  var usernotes = <Note>[];
+  var usernotes = <Note>[].obs;
+
+  @override
+  void onInit() {
+    getusernotes();
+    super.onInit();
+  }
 
   Future createNote(String title, String content) async {
     final notesdoc = db.collection('notes').doc();
@@ -25,7 +32,7 @@ class HomeController extends GetxController {
       await notesdoc.set(note.toJson());
       Get.offAll(() => const HomeScreen());
     } catch (e) {
-      print("error in createNote() $e");
+      debugPrint("error in createNote() $e");
     }
   }
 
@@ -42,36 +49,34 @@ class HomeController extends GetxController {
       await notesdoc.update(note.toJson());
       Get.offAll(() => const HomeScreen());
     } catch (e) {
-      print("error in createNote() $e");
+      debugPrint("error in createNote() $e");
     }
   }
 
   //by user id
   Future getusernotes() async {
     isLoading = false.obs;
-    usernotes = <Note>[];
+    usernotes = <Note>[].obs;
     try {
-      usernotes = <Note>[];
-      await db
+      usernotes = <Note>[].obs;
+      db
           .collection("notes")
           .where(
             "uid",
             isEqualTo: auth.currentUser!.uid,
           )
-          .get()
-          .then(
-        (querySnapshot) {
-          for (var docSnapshot in querySnapshot.docs) {
-            final fundraiser = Note.fromJson(docSnapshot.data());
-            usernotes.add(fundraiser);
-          }
+          .snapshots()
+          .listen((event) {
+        usernotes.clear();
+        for (var docSnapshot in event.docs) {
+          final fundraiser = Note.fromJson(docSnapshot.data());
+          usernotes.add(fundraiser);
+        }
 
-          isLoading.value = true;
-        },
-        onError: (e) => print("Error completing getusernotes(): $e"),
-      );
+        isLoading.value = true;
+      });
     } catch (e) {
-      print("error in getusernotes() $e");
+      debugPrint("error in getusernotes() $e");
     }
   }
 }
